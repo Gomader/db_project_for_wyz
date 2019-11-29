@@ -1,6 +1,6 @@
 <?php
 require_once "mysql_entities_fix_string.php";
-require_once "../login/usr.php";
+require_once "../user/usr.php";
 $conn = new mysqli($hn,$un,$pw,$db);
 if ($conn->connect_error) die($conn->connect_error);
 
@@ -14,5 +14,7 @@ if($conn->query($query) === true){
 }else {
     echo "Sign up Failed! Something wrong! Please try again!";
 }
+$id = mysqli_insert_id($mysqli);
+echo $id;
 $conn->close();
 ?>
