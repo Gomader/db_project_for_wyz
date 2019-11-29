@@ -30,9 +30,11 @@ session_start();
         <script>
             function signin(){
                 document.getElementById("inform").style.display="block";
+                document.getElementById("upform").style.display="none";
             }
             function signup(){
                 document.getElementById("upform").style.display="block";
+                document.getElementById("inform").style.display="none";
             }
         </script>
     </body>
