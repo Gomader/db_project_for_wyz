@@ -1,6 +1,6 @@
 <?php
 $hn = "localhost";
-$db = "dbproject";
+$db = "dbprojectb";
 $un = "users";
 $pw = "lDuy8MJcZt7ZtCIr";
 ?>
