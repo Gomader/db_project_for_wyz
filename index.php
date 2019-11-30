@@ -6,16 +6,27 @@ session_start();
 <html>
     <head>
         <title>WYZ Cinema</title>
-
+		<style>
+			a{
+				text-decoration:none;
+				color:black;
+			}
+			a:hover{
+				color: #000000;
+			}
+		</style>
     </head>
     <body>
+		<a href="cinema.php"><h1>Let's buy tickets!</h1></a>
         <div id="bts" style="height=100px;width=100px;margin-top:200px;margin-left:100px;">
 			<?php
 			if(!$_SESSION){
 				echo "<button onclick='signin()'>sign in</button>
             <button onclick='signup()'>sign up</button>";
 			} else {
-				echo "<b>Welcome back<b><br><form action='php/signout.php' method='get'><input type='submit' value='sign out'></form>";
+				echo "<b>Welcome back ";
+				echo $_SESSION["id"];
+				echo "</b><br><a href='mypage.php'>Click To my Page</a><form action='php/signout.php' method='get'><input type='submit' value='sign out'></form>";
 			}
 			?>
         </div>
@@ -39,6 +50,56 @@ session_start();
 				<input type="search" name="mykey"/>
 				<input type="submit" value="search" />
 			</form>
+		</div>
+		<div style="position: relative;width: 70%;margin: 20px auto;margin-bottom: 3.125rem;">
+			<div style="width: 40%;position: absolute;border: 1px solid black;top: 1.25rem;">
+				<h2>Top movie</h2>
+				<?php
+				require_once "php/mysql_entities_fix_string.php";
+				require_once "user/users.php";
+				$conn = new mysqli($hn,$un,$pw,$db);
+				if ($conn->connect_error) die($conn->connect_error);
+				$query = "SELECT * FROM movie order by movie_sort desc";
+				$userInfo = $conn->query($query);				
+				if($userInfo->num_rows > 0){
+					while($row = $userInfo->fetch_assoc()){
+						echo "<div style='width:100%;height:50px;position:relative;margin-top:5px'><img src='";
+						echo $row["movie_cover"];
+						echo "' style='height:50px;position:absolute;'/><a href='movie.php?id=";
+						echo $row["movie_id"];
+						echo "'>";
+						echo $row["movie_name"];
+						echo " ";
+						echo $row["movie_sort"];
+						echo "</a></div>";
+					}
+				}
+				?>	
+			</div>
+			<div style="width: 40%;position: absolute;left: 60%;border: 1px solid black;top:1.25rem">
+				<h2>All the drama movies</h2>
+				<?php
+				require_once "php/mysql_entities_fix_string.php";
+				require_once "user/users.php";
+				$conn = new mysqli($hn,$un,$pw,$db);
+				if ($conn->connect_error) die($conn->connect_error);
+				$query = "SELECT * FROM movie where movie_genre like '%Drama%'";
+				$userInfo = $conn->query($query);
+				if($userInfo->num_rows > 0){
+					while($row = $userInfo->fetch_assoc()){
+						echo "<div style='width:100%;height:50px;position:relative;margin-top:5px'><img src='";
+						echo $row["movie_cover"];
+						echo "' style='height:50px;position:absolute;'/><a href='movie.php?id=";
+						echo $row["movie_id"];
+						echo "'>";
+						echo $row["movie_name"];
+						echo " ";
+						echo $row["movie_sort"];
+						echo "</a></div>";
+					}
+				}
+				?>	
+			</div>
 		</div>
 		<script>
 			function signin(){
